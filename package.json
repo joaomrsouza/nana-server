@@ -1,0 +1,58 @@
+{
+  "name": "projeto-1",
+  "version": "1.0.0",
+  "description": "mini forum",
+  "license": "ISC",
+  "author": "joaomrsouza",
+  "type": "commonjs",
+  "main": "index.js",
+  "scripts": {
+    "dev": "concurrently --names \"CSS,Server\" --prefix-colors \"blue.bold,green.bold\" \"npm run css:watch\" \"npm run dev:server\"",
+    "dev:server": "nodemon --watch src --ext ts,js,json --exec ts-node -r dotenv/config -r tsconfig-paths/register src/server/index.ts",
+    "css:build": "postcss src/public/css/main.css -o src/public/css/output.css",
+    "css:watch": "postcss src/public/css/main.css -o src/public/css/output.css --watch",
+    "lint": "eslint .",
+    "lint:fix": "eslint --fix .",
+    "format": "prettier --write \"**/*.{js,ts,json,md,css}\"",
+    "build": "npm run css:build && tsc",
+    "start": "node dist/index.js"
+  },
+  "dependencies": {
+    "@tailwindcss/postcss": "^4.1.10",
+    "dotenv": "^16.5.0",
+    "ejs": "^3.1.10",
+    "express": "^5.1.0",
+    "mysql2": "^3.14.1",
+    "postcss-cli": "^11.0.1",
+    "sequelize": "^6.37.7",
+    "zod": "^3.25.7"
+  },
+  "devDependencies": {
+    "@eslint/css": "^0.8.1",
+    "@eslint/js": "^9.27.0",
+    "@eslint/json": "^0.12.0",
+    "@eslint/markdown": "^6.4.0",
+    "@types/express": "^5.0.2",
+    "@types/node": "^22.15.19",
+    "commitizen": "^4.3.1",
+    "concurrently": "^9.1.2",
+    "cz-conventional-changelog": "^3.3.0",
+    "eslint": "^9.27.0",
+    "eslint-config-prettier": "^10.1.5",
+    "eslint-plugin-prettier": "^5.4.0",
+    "globals": "^16.1.0",
+    "nodemon": "^3.1.10",
+    "postcss": "^8.5.6",
+    "prettier": "^3.5.3",
+    "tailwindcss": "^4.1.10",
+    "ts-node": "^10.9.2",
+    "tsconfig-paths": "^4.2.0",
+    "typescript": "^5.8.3",
+    "typescript-eslint": "^8.32.1"
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
+  }
+}
