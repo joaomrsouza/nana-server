@@ -11,7 +11,3 @@ export const Post = db.define("post", {
     allowNull: false,
   },
 });
-
-Post.sync({ force: false }).then(() => {
-  console.log("Post model synced successfully.");
-});

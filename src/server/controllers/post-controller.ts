@@ -3,7 +3,7 @@ import { PostSchema } from "@/schemas";
 import { Request, Response, Router } from "express";
 import z from "zod/v4";
 
-const router = Router().use("/posts", () => {});
+const router = Router();
 
 // Get all posts
 router.get("/", async (_req: Request, res: Response) => {
