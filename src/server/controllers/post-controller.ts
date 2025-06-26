@@ -1,15 +1,23 @@
 import { Post } from "@/db/models";
 import { PostSchema } from "@/schemas";
+import {
+  sendCreatedResponse,
+  sendErrorResponse,
+  sendSuccessResponse,
+} from "@/utils/send-response";
 import { Request, Response, Router } from "express";
-import z from "zod/v4";
 
 const router = Router();
 
 // Get all posts
 router.get("/", async (_req: Request, res: Response) => {
-  const posts = await Post.findAll();
+  try {
+    const posts = await Post.findAll();
 
-  res.json({ message: "List of posts", posts });
+    sendSuccessResponse(res, posts);
+  } catch (error) {
+    sendErrorResponse(res, error);
+  }
 });
 
 // Create a new post
@@ -19,14 +27,9 @@ router.post("/", async (req: Request, res: Response) => {
 
     const post = await Post.create(data);
 
-    res.status(201).json({ message: "Post created", post });
+    sendCreatedResponse(res, post);
   } catch (error) {
-    if (error instanceof z.ZodError) {
-      res.status(400).json({ errors: z.prettifyError(error) });
-      return;
-    }
-
-    res.status(500).json({ error: "Failed to create post" });
+    sendErrorResponse(res, error);
   }
 });
 

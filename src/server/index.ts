@@ -1,4 +1,4 @@
-import express from "express";
+import express, { NextFunction, Request, Response } from "express";
 import path from "path";
 import { postController, rootController } from "./controllers";
 import { db } from "./db";
@@ -15,6 +15,17 @@ app.set("view engine", "ejs");
 
 app.use("/", rootController);
 app.use("/posts", postController);
+
+app.use((err: unknown, _req: Request, res: Response, _next: NextFunction) => {
+  console.error("Erro capturado pelo middleware:", err);
+
+  if (!res.headersSent) {
+    res.status(500).render("error", {
+      error: err,
+      message: "Erro interno do servidor",
+    });
+  }
+});
 
 db.afterSync(() => {
   app.emit("ready");
