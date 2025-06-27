@@ -1,8 +1,19 @@
+// "./utils/module-alias" deve ser o primeiro import deste arquivo
+import "./utils/module-alias";
+
 import express, { NextFunction, Request, Response } from "express";
 import path from "path";
 import { postController, rootController } from "./controllers";
 import { db } from "./db";
+import {
+  Control,
+  MovementReadings,
+  NoiseReadings,
+  TemperatureReadings,
+} from "./db/models";
 import { env } from "./env";
+
+const _models = [Control, MovementReadings, NoiseReadings, TemperatureReadings];
 
 const app = express();
 

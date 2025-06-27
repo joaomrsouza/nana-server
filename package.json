@@ -15,7 +15,7 @@
     "lint:fix": "eslint --fix .",
     "format": "prettier --write \"**/*.{js,ts,json,md,css}\"",
     "build": "npm run css:build && tsc",
-    "start": "node dist/index.js"
+    "start": "node dist/server/index.js"
   },
   "dependencies": {
     "@tailwindcss/postcss": "^4.1.10",
@@ -33,6 +33,7 @@
     "@eslint/json": "^0.12.0",
     "@eslint/markdown": "^6.4.0",
     "@types/express": "^5.0.2",
+    "@types/module-alias": "^2.0.4",
     "@types/node": "^22.15.19",
     "commitizen": "^4.3.1",
     "concurrently": "^9.1.2",
@@ -41,6 +42,7 @@
     "eslint-config-prettier": "^10.1.5",
     "eslint-plugin-prettier": "^5.4.0",
     "globals": "^16.1.0",
+    "module-alias": "^2.2.3",
     "nodemon": "^3.1.10",
     "postcss": "^8.5.6",
     "prettier": "^3.5.3",
