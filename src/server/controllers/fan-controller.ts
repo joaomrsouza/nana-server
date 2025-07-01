@@ -17,7 +17,7 @@ router.get("/", async (_req: Request, res: Response) => {
     });
 
     let fanSpeed = 0;
-    let autoMode = false;
+    let autoMode = true;
 
     controls.forEach(entry => {
       const { name, value } = entry.get();
@@ -25,6 +25,8 @@ router.get("/", async (_req: Request, res: Response) => {
       if (name === "fanSpeed") fanSpeed = Number(value);
       if (name === "fanMode") autoMode = value === "true";
     });
+
+    console.log("GET FAN", { fanSpeed, autoMode });
 
     sendSuccessResponse(res, { fanSpeed, autoMode });
   } catch (error) {

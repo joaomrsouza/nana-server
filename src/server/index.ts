@@ -3,17 +3,9 @@ import "./utils/module-alias";
 
 import express, { NextFunction, Request, Response } from "express";
 import path from "path";
-import { dataController, fanController, rootController } from "./controllers";
+import { dataController, fanController, rootController, sensorsController } from "./controllers";
 import { db } from "./db";
-import {
-  Control,
-  MovementReadings,
-  NoiseReadings,
-  TemperatureReadings,
-} from "./db/models";
 import { env } from "./env";
-
-const _models = [Control, MovementReadings, NoiseReadings, TemperatureReadings];
 
 const app = express();
 
@@ -27,6 +19,7 @@ app.set("view engine", "ejs");
 app.use("/", rootController);
 app.use("/api/data", dataController);
 app.use("/api/fan", fanController);
+app.use("/api/sensors", sensorsController);
 
 app.use((err: unknown, _req: Request, res: Response, _next: NextFunction) => {
   console.error("Erro capturado pelo middleware:", err);

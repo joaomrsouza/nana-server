@@ -11,7 +11,7 @@
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
           <!-- Temperature Sensor -->
           <div class="flex items-center space-x-3">
-            <div class="w-4 h-4 bg-green-500 rounded-full"></div>
+            <div id="temp-sensor-status" class="w-4 h-4 bg-green-500 rounded-full"></div>
             <div>
               <p class="text-sm font-medium">Sensor de</p>
               <p class="text-sm font-medium">Temperatura</p>
@@ -20,7 +20,7 @@
 
           <!-- Movement Sensor -->
           <div class="flex items-center space-x-3">
-            <div class="w-4 h-4 bg-green-500 rounded-full"></div>
+            <div id="movement-sensor-status" class="w-4 h-4 bg-green-500 rounded-full"></div>
             <div>
               <p class="text-sm font-medium">Sensor de</p>
               <p class="text-sm font-medium">Movimento</p>
@@ -29,7 +29,7 @@
 
           <!-- Noise Sensor -->
           <div class="flex items-center space-x-3">
-            <div class="w-4 h-4 bg-red-500 rounded-full"></div>
+            <div id="noise-sensor-status" class="w-4 h-4 bg-green-500 rounded-full"></div>
             <div>
               <p class="text-sm font-medium">Sensor de</p>
               <p class="text-sm font-medium">Ruído</p>
@@ -45,19 +45,19 @@
           <!-- Temperature -->
           <div>
             <p class="text-sm text-gray-400 mb-2">Temperatura</p>
-            <p class="text-4xl font-light">32.4 C</p>
+            <p id="temp-value" class="text-4xl font-light">32.4 C</p>
           </div>
 
           <!-- Movement -->
           <div>
             <p class="text-sm text-gray-400 mb-2">Movimento</p>
-            <p class="text-4xl font-light">--</p>
+            <p id="movement-value" class="text-4xl font-light">--</p>
           </div>
 
           <!-- Noise -->
           <div>
             <p class="text-sm text-gray-400 mb-2">Ruído</p>
-            <p class="text-3xl font-light">Moderado</p>
+            <p id="noise-value" class="text-3xl font-light">Moderado</p>
           </div>
         </div>
       </section>
@@ -102,8 +102,9 @@
               1</span></p>
         </div>
       </section>
-      <scriopt src="/scripts/notifications.js"></script>
-      <scriopt src="/scripts/fanControl.js"></script>
+      <script src="/scripts/notifications.js"></script>
+      <script src="/scripts/fanControl.js"></script>
+      <script src="/scripts/dataFetch.js"></script>
   </body>
   <%- include("templates/footer") %>
 

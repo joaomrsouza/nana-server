@@ -1,5 +1,5 @@
-import { NoiseReadings, TemperatureReadings } from "@/db/models";
-import { sendCreatedResponse, sendErrorResponse } from "@/utils/send-response";
+import { MovementReadings, NoiseReadings, TemperatureReadings } from "@/db/models";
+import { sendCreatedResponse, sendErrorResponse, sendSuccessResponse } from "@/utils/send-response";
 import { Request, Response, Router } from "express";
 import { Control } from "../db/models/control-model";
 import { DeviceDataSchema } from "../schemas/data-schema";
@@ -9,18 +9,17 @@ const router = Router();
 // GET /api/data
 router.get("/", async (_req: Request, res: Response) => {
   try {
-    const keys = ["temperature", "movement", "noise"];
-    const controls = await Control.findAll({ where: { name: keys } });
+    const [temperatureReadings, movementReadings, noiseReadings] = await Promise.all([
+      TemperatureReadings.findOne({ order: [["timestamp", "DESC"]] }),
+      MovementReadings.findOne({ order: [["timestamp", "DESC"]] }),
+      NoiseReadings.findOne({ order: [["timestamp", "DESC"]] }),
+    ]);
 
-    const result: Record<string, number[]> = {};
-
-    controls.forEach(entry => {
-      const { name, value } = entry.get(); // extrai os campos reais do model
-      const parsed = parseFloat(value);
-      result[`${name}Readings`] = isNaN(parsed) ? [0] : [parsed];
-    });
-
-    res.json(result);
+    sendSuccessResponse(res, {
+      temperatureReadings,
+      movementReadings,
+      noiseReadings,
+    })
   } catch (error) {
     sendErrorResponse(res, error);
   }
@@ -31,16 +30,39 @@ router.post("/", async (req: Request, res: Response) => {
   try {
     const data = DeviceDataSchema.parse(req.body);
 
-    await Promise.all([
-      TemperatureReadings.create({
+    const ops = [];
+
+    if (data.temperature !== null) {
+      ops.push(TemperatureReadings.create({
         temperature: data.temperature,
         timestamp: new Date(),
-      }),
+      }));
+    }
 
-      NoiseReadings.create({
+    if (data.noiseLevel !== null) {
+      ops.push(NoiseReadings.create({
         noiseLevel: data.noiseLevel,
         timestamp: new Date(),
-      }),
+      }));
+    }
+
+    if (data.movementDetected !== null) {
+      ops.push(MovementReadings.create({
+        movement: data.movementDetected,
+        timestamp: new Date(),
+      }));
+    }
+
+    if (data.fanSpeed !== null) {
+      ops.push(Control.upsert({
+        name: "fanSpeed",
+        value: data.fanSpeed.toString(),
+      }));
+    }
+
+
+    await Promise.all([
+      ...ops,
 
       Control.upsert({
         name: "temperatureStatus",
@@ -55,16 +77,6 @@ router.post("/", async (req: Request, res: Response) => {
       Control.upsert({
         name: "noiseStatus",
         value: data.noiseSensorStatus.toString(),
-      }),
-
-      Control.upsert({
-        name: "fanSpeed",
-        value: data.fanSpeed.toString(),
-      }),
-
-      Control.upsert({
-        name: "fanMode",
-        value: data.autoMode.toString(),
       }),
     ]);
 
