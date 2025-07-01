@@ -1,7 +1,8 @@
-import { Router, Request, Response } from "express";
-import { DeviceDataSchema } from "../schemas/data-schema";
-import { sendErrorResponse } from "@/utils/send-response";
+import { NoiseReadings, TemperatureReadings } from "@/db/models";
+import { sendCreatedResponse, sendErrorResponse } from "@/utils/send-response";
+import { Request, Response, Router } from "express";
 import { Control } from "../db/models/control-model";
+import { DeviceDataSchema } from "../schemas/data-schema";
 
 const router = Router();
 
@@ -13,7 +14,7 @@ router.get("/", async (_req: Request, res: Response) => {
 
     const result: Record<string, number[]> = {};
 
-    controls.forEach((entry) => {
+    controls.forEach(entry => {
       const { name, value } = entry.get(); // extrai os campos reais do model
       const parsed = parseFloat(value);
       result[`${name}Readings`] = isNaN(parsed) ? [0] : [parsed];
@@ -30,32 +31,44 @@ router.post("/", async (req: Request, res: Response) => {
   try {
     const data = DeviceDataSchema.parse(req.body);
 
-    const ops = [];
+    await Promise.all([
+      TemperatureReadings.create({
+        temperature: data.temperature,
+        timestamp: new Date(),
+      }),
 
-    if (data.tempSensorStatus) {
-      ops.push(
-        Control.upsert({ name: "temperature", value: data.temperature.toString() }),
-        Control.upsert({ name: "temperatureStatus", value: "true" })
-      );
-    }
+      NoiseReadings.create({
+        noiseLevel: data.noiseLevel,
+        timestamp: new Date(),
+      }),
 
-    if (data.movSensorStatus) {
-      ops.push(
-        Control.upsert({ name: "movement", value: "1" }),
-        Control.upsert({ name: "movementStatus", value: "true" })
-      );
-    }
+      Control.upsert({
+        name: "temperatureStatus",
+        value: data.tempSensorStatus.toString(),
+      }),
 
-    if (data.noiseSensorStatus) {
-      ops.push(
-        Control.upsert({ name: "noise", value: data.noiseLevel.toString() }),
-        Control.upsert({ name: "noiseStatus", value: "true" })
-      );
-    }
+      Control.upsert({
+        name: "movementStatus",
+        value: data.movSensorStatus.toString(),
+      }),
 
-    await Promise.all(ops);
+      Control.upsert({
+        name: "noiseStatus",
+        value: data.noiseSensorStatus.toString(),
+      }),
 
-    res.status(201).json({ message: "Dados salvos com sucesso no banco." });
+      Control.upsert({
+        name: "fanSpeed",
+        value: data.fanSpeed.toString(),
+      }),
+
+      Control.upsert({
+        name: "fanMode",
+        value: data.autoMode.toString(),
+      }),
+    ]);
+
+    sendCreatedResponse(res);
   } catch (error) {
     sendErrorResponse(res, error);
   }

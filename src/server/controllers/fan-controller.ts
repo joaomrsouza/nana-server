@@ -1,7 +1,11 @@
-import { Router, Request, Response } from "express";
-import { FanControlSchema } from "../schemas/fan-schema";
-import { sendErrorResponse } from "@/utils/send-response";
+import {
+  sendCreatedResponse,
+  sendErrorResponse,
+  sendSuccessResponse,
+} from "@/utils/send-response";
+import { Request, Response, Router } from "express";
 import { Control } from "../db/models/control-model";
+import { FanControlSchema } from "../schemas/fan-schema";
 
 const router = Router();
 
@@ -15,14 +19,14 @@ router.get("/", async (_req: Request, res: Response) => {
     let fanSpeed = 0;
     let autoMode = false;
 
-    controls.forEach((entry) => {
+    controls.forEach(entry => {
       const { name, value } = entry.get();
 
-      if (name === "fanSpeed") fanSpeed = parseInt(value, 10);
+      if (name === "fanSpeed") fanSpeed = Number(value);
       if (name === "fanMode") autoMode = value === "true";
     });
 
-    res.json({ fanSpeed, autoMode });
+    sendSuccessResponse(res, { fanSpeed, autoMode });
   } catch (error) {
     sendErrorResponse(res, error);
   }
@@ -38,7 +42,7 @@ router.post("/", async (req: Request, res: Response) => {
       Control.upsert({ name: "fanMode", value: data.autoMode.toString() }),
     ]);
 
-    res.status(201).json({ message: "Configuração do ventilador salva." });
+    sendCreatedResponse(res);
   } catch (error) {
     sendErrorResponse(res, error);
   }

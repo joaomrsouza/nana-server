@@ -1,7 +1,7 @@
 {
-  "name": "projeto-1",
+  "name": "nana-server",
   "version": "1.0.0",
-  "description": "mini forum",
+  "description": "Nana server",
   "license": "ISC",
   "author": "joaomrsouza",
   "type": "commonjs",
@@ -14,7 +14,8 @@
     "lint": "eslint .",
     "lint:fix": "eslint --fix .",
     "format": "prettier --write \"**/*.{js,ts,json,md,css}\"",
-    "build": "npm run css:build && tsc",
+    "build": "npm run css:build && tsc && npm run postbuild",
+    "postbuild": "copyfiles -u 1 src/public/* src/public/**/* src/views/* src/views/**/* dist",
     "start": "node dist/server/index.js"
   },
   "dependencies": {
@@ -37,6 +38,7 @@
     "@types/node": "^22.15.19",
     "commitizen": "^4.3.1",
     "concurrently": "^9.1.2",
+    "copyfiles": "^2.4.1",
     "cz-conventional-changelog": "^3.3.0",
     "eslint": "^9.27.0",
     "eslint-config-prettier": "^10.1.5",
