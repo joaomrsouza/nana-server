@@ -1,52 +1,61 @@
 import { Router, Request, Response } from "express";
-import { z } from "zod";
+import { DeviceDataSchema } from "../schemas/data-schema";
 import { sendErrorResponse } from "@/utils/send-response";
+import { Control } from "../db/models/control-model";
 
 const router = Router();
 
-const temperatureReadings: number[] = [];
-const movementReadings: boolean[] = [];
-const noiseReadings: number[] = [];
-
-const postDataSchema = z.object({
-  temperature: z.number(),
-  noiseLevel: z.number().int(),
-  tempSensorStatus: z.boolean(),
-  movSensorStatus: z.boolean(),
-  noiseSensorStatus: z.boolean(),
-});
-
 // GET /api/data
-router.get("/", (_req: Request, res: Response) => {
+router.get("/", async (_req: Request, res: Response) => {
   try {
-    res.json({
-      temperatureReadings,
-      movementReadings,
-      noiseReadings,
+    const keys = ["temperature", "movement", "noise"];
+    const controls = await Control.findAll({ where: { name: keys } });
+
+    const result: Record<string, number[]> = {};
+
+    controls.forEach((entry) => {
+      const { name, value } = entry.get(); // extrai os campos reais do model
+      const parsed = parseFloat(value);
+      result[`${name}Readings`] = isNaN(parsed) ? [0] : [parsed];
     });
+
+    res.json(result);
   } catch (error) {
     sendErrorResponse(res, error);
   }
 });
 
 // POST /api/data
-router.post("/", (req: Request, res: Response) => {
+router.post("/", async (req: Request, res: Response) => {
   try {
-    const data = postDataSchema.parse(req.body);
+    const data = DeviceDataSchema.parse(req.body);
+
+    const ops = [];
 
     if (data.tempSensorStatus) {
-      temperatureReadings.push(data.temperature);
+      ops.push(
+        Control.upsert({ name: "temperature", value: data.temperature.toString() }),
+        Control.upsert({ name: "temperatureStatus", value: "true" })
+      );
     }
 
     if (data.movSensorStatus) {
-      movementReadings.push(true);
+      ops.push(
+        Control.upsert({ name: "movement", value: "1" }),
+        Control.upsert({ name: "movementStatus", value: "true" })
+      );
     }
 
     if (data.noiseSensorStatus) {
-      noiseReadings.push(data.noiseLevel);
+      ops.push(
+        Control.upsert({ name: "noise", value: data.noiseLevel.toString() }),
+        Control.upsert({ name: "noiseStatus", value: "true" })
+      );
     }
 
-    res.status(201).json({ message: "Dados recebidos com sucesso." });
+    await Promise.all(ops);
+
+    res.status(201).json({ message: "Dados salvos com sucesso no banco." });
   } catch (error) {
     sendErrorResponse(res, error);
   }
