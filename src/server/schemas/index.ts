@@ -1,1 +1,2 @@
-export * from "./post-schema";
+export * from "./data-schema"; 
+export * from "./fan-schema";

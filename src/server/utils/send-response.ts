@@ -1,11 +1,11 @@
 import { Response } from "express";
 import z from "zod/v4";
 
-export function sendSuccessResponse(res: Response, data: unknown) {
+export function sendSuccessResponse(res: Response, data?: unknown) {
   res.status(200).json({ status: "success", message: "Success", data });
 }
 
-export function sendCreatedResponse(res: Response, data: unknown) {
+export function sendCreatedResponse(res: Response, data?: unknown) {
   res.status(201).json({ status: "success", message: "Created", data });
 }
 

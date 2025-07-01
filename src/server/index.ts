@@ -1,8 +1,19 @@
+// "./utils/module-alias" deve ser o primeiro import deste arquivo
+import "./utils/module-alias";
+
 import express, { NextFunction, Request, Response } from "express";
 import path from "path";
-import { postController, rootController } from "./controllers";
+import { dataController, fanController, rootController } from "./controllers";
 import { db } from "./db";
+import {
+  Control,
+  MovementReadings,
+  NoiseReadings,
+  TemperatureReadings,
+} from "./db/models";
 import { env } from "./env";
+
+const _models = [Control, MovementReadings, NoiseReadings, TemperatureReadings];
 
 const app = express();
 
@@ -14,7 +25,8 @@ app.set("views", path.join(__dirname, "../views"));
 app.set("view engine", "ejs");
 
 app.use("/", rootController);
-app.use("/posts", postController);
+app.use("/api/data", dataController);
+app.use("/api/fan", fanController);
 
 app.use((err: unknown, _req: Request, res: Response, _next: NextFunction) => {
   console.error("Erro capturado pelo middleware:", err);
