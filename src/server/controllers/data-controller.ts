@@ -53,17 +53,17 @@ router.post("/", async (req: Request, res: Response) => {
       }));
     }
 
-    if (data.fanSpeed !== null) {
-      ops.push(Control.upsert({
-        name: "fanSpeed",
-        value: data.fanSpeed.toString(),
-      }));
-    }
-
     if (data.fanAutoMode !== undefined) {
       ops.push(Control.upsert({
         name: "fanAutoMode",
         value: data.fanAutoMode.toString(),
+      }));
+    }
+
+    if (data.fanSpeed !== null && data.fanAutoMode) {
+      ops.push(Control.upsert({
+        name: "fanSpeed",
+        value: data.fanSpeed.toString(),
       }));
     }
 
