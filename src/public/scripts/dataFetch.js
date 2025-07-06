@@ -20,16 +20,12 @@ async function fetchData(route) {
 
 async function updateSensorLabel(element, elementText, value) {
   if (value) {
-    element.classList.remove("bg-failed-bg");
-    element.classList.remove("text-failed");
-    element.classList.add("bg-sucessful-bg");
-    element.classList.add("text-sucessful");
+    element.classList.remove("bg-failed-bg", "text-failed");
+    element.classList.add("bg-sucessful-bg", "text-sucessful");
     elementText.textContent = "Ativo";
   } else {
-    element.classList.remove("bg-sucessful-bg");
-    element.classList.remove("text-sucessful");
-    element.classList.add("bg-failed-bg");
-    element.classList.add("text-failed");
+    element.classList.remove("bg-sucessful-bg", "text-sucessful");
+    element.classList.add("bg-failed-bg", "text-failed");
     elementText.textContent = "Inativo";
   }
 }
@@ -49,6 +45,7 @@ async function updateSensorStatus() {
 
 async function updateTempValueLabel(temperature) {
   tempValue.textContent = `${temperature} °C`;
+  tempValue.classList.remove("text-failed", "text-safe", "text-caution");
 
   if (temperature === 0) {
     tempValue.textContent = "-";
@@ -75,6 +72,8 @@ async function updateMovementValueLabel(movement) {
 }
 
 async function updateNoiseValueLabel(noiseLevel) {
+  tempValue.classList.remove("text-failed", "text-safe", "text-caution");
+
   if (noiseLevel <= 800) {
     noiseValue.textContent = "-";
     noiseValue.classList.add("text-failed");
