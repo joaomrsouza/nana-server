@@ -2,106 +2,133 @@
 <html>
 <%- include("templates/header") %>
 
-  <body class="bg-gray-100">
+  <body class="p-5 sm:p-10 min-h-screen flex flex-col items-center gap-5 bg-bg font-sora">
     <%- include("templates/navbar") %>
 
-      <!-- Sensors Section -->
-      <section class="mb-12">
-        <h2 class="text-xl font-light mb-6">Sensores</h2>
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <!-- Temperature Sensor -->
-          <div class="flex items-center space-x-3">
-            <div id="temp-sensor-status" class="w-4 h-4 bg-green-500 rounded-full"></div>
-            <div>
-              <p class="text-sm font-medium">Sensor de</p>
-              <p class="text-sm font-medium">Temperatura</p>
-            </div>
-          </div>
+      <main class="pt-5 sm:pt-10 max-w-screen-xl w-full flex flex-col gap-10">
 
-          <!-- Movement Sensor -->
-          <div class="flex items-center space-x-3">
-            <div id="movement-sensor-status" class="w-4 h-4 bg-green-500 rounded-full"></div>
-            <div>
-              <p class="text-sm font-medium">Sensor de</p>
-              <p class="text-sm font-medium">Movimento</p>
-            </div>
-          </div>
+        <!-- Sensors Section -->
+        <section class="grid grid-cols-1 gap-5">
+          <h2 class="text-2xl text-primary font-bold">SENSORS</h2>
+          <div class="flex flex-col lg:flex-row gap-5 justify-between font-medium">
 
-          <!-- Noise Sensor -->
-          <div class="flex items-center space-x-3">
-            <div id="noise-sensor-status" class="w-4 h-4 bg-green-500 rounded-full"></div>
-            <div>
-              <p class="text-sm font-medium">Sensor de</p>
-              <p class="text-sm font-medium">Ruído</p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- Measurements Section -->
-      <section>
-        <h2 class="text-xl font-light mb-8">Medidas</h2>
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-          <!-- Temperature -->
-          <div>
-            <p class="text-sm text-gray-400 mb-2">Temperatura</p>
-            <p id="temp-value" class="text-4xl font-light">32.4 C</p>
-          </div>
-
-          <!-- Movement -->
-          <div>
-            <p class="text-sm text-gray-400 mb-2">Movimento</p>
-            <p id="movement-value" class="text-4xl font-light">--</p>
-          </div>
-
-          <!-- Noise -->
-          <div>
-            <p class="text-sm text-gray-400 mb-2">Ruído</p>
-            <p id="noise-value" class="text-3xl font-light">Moderado</p>
-          </div>
-        </div>
-      </section>
-
-      <!-- Fan Control Section -->
-      <section class="mb-12">
-        <h2 class="text-xl font-light mb-6">Ventilador</h2>
-        <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-6">
-          <!-- Auto Mode Switch -->
-          <div class="flex items-center space-x-4">
-            <span class="text-sm font-medium">Modo Automático</span>
-            <label class="relative inline-flex items-center cursor-pointer">
-              <input type="checkbox" id="autoModeSwitch" class="sr-only peer">
-              <div
-                class="w-11 h-6 bg-gray-600 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-800 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600">
+            <div class="p-5 flex items-center gap-5 text-secondary bg-soft rounded-xl shadow-md">
+              <div class="p-2 rounded-full bg-secondary">
+                <svg class="text-soft" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                  fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                  class="lucide lucide-thermometer-icon lucide-thermometer">
+                  <path d="M14 4v10.54a4 4 0 1 1-4 0V4a2 2 0 0 1 4 0Z" />
+                </svg>
               </div>
-              <span id="autoModeStatus" class="ml-3 text-sm text-gray-400">Desligado</span>
-            </label>
-          </div>
+              <span>Sensor de Temperatura</span>
+              <div id="temp-sensor-status" class="ml-auto px-2 py-1 flex items-center gap-1 rounded-md">
+                <span class="w-2 h-2 rounded-full bg-current"></span>
+                <span id="temp-sensor-status-text" class="text-xs"></span>
+              </div>
+            </div>
 
-          <!-- Fan Speed Controls -->
-          <div class="flex items-center space-x-3">
-            <span class="text-sm font-medium mr-2">Velocidade:</span>
-            <button id="speedBtn1"
-              class="speed-btn px-4 py-2 bg-gray-600 hover:bg-gray-500 rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-gray-400 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-gray-600">
-              1
-            </button>
-            <button id="speedBtn2"
-              class="speed-btn px-4 py-2 bg-gray-600 hover:bg-gray-500 rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-gray-400 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-gray-600">
-              2
-            </button>
-            <button id="speedBtn3"
-              class="speed-btn px-4 py-2 bg-gray-600 hover:bg-gray-500 rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-gray-400 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-gray-600">
-              3
-            </button>
-          </div>
-        </div>
+            <div class="p-5 flex items-center gap-5 text-secondary bg-soft rounded-xl shadow-md">
+              <div class="p-2 rounded-full bg-secondary">
+                <svg class="text-soft" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                  fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                  class="lucide lucide-activity-icon lucide-activity">
+                  <path
+                    d="M22 12h-2.48a2 2 0 0 0-1.93 1.46l-2.35 8.36a.25.25 0 0 1-.48 0L9.24 2.18a.25.25 0 0 0-.48 0l-2.35 8.36A2 2 0 0 1 4.49 12H2" />
+                </svg>
+              </div>
+              <span>Sensor de Movimento</span>
+              <div id="movement-sensor-status" class="ml-auto px-2 py-1 flex items-center gap-1 rounded-md">
+                <span class="w-2 h-2 rounded-full bg-current"></span>
+                <span id="movement-sensor-status-text" class="text-xs"></span>
+              </div>
+            </div>
 
-        <!-- Current Fan Status -->
-        <div class="mt-4 p-4 bg-gray-700 rounded-lg">
-          <p class="text-sm text-gray-300">Status: <span id="fanStatus" class="text-white font-medium">Velocidade
-              1</span></p>
-        </div>
-      </section>
+            <div class="p-5 flex items-center gap-5 text-secondary bg-soft rounded-xl shadow-md">
+              <div class="p-2 rounded-full bg-secondary">
+                <svg class="text-soft" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                  fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                  class="lucide lucide-audio-lines-icon lucide-audio-lines">
+                  <path d="M2 10v3" />
+                  <path d="M6 6v11" />
+                  <path d="M10 3v18" />
+                  <path d="M14 8v7" />
+                  <path d="M18 5v13" />
+                  <path d="M22 10v3" />
+                </svg>
+              </div>
+              <span>Sensor de Ruído</span>
+              <div id="noise-sensor-status" class="ml-auto px-2 py-1 flex items-center gap-1 rounded-md">
+                <span class="w-2 h-2 rounded-full bg-current"></span>
+                <span id="noise-sensor-status-text" class="text-xs"></span>
+              </div>
+            </div>
+
+          </div>
+        </section>
+
+        <!-- Measurements Section -->
+        <section class="grid grid-cols-1 gap-5">
+          <h2 class="text-2xl text-primary font-bold">MEASURES</h2>
+          <div class="flex flex-col md:flex-row gap-10 justify-between font-medium">
+
+            <div class="max-w-60 lg:w-full grid grid-cols-1 gap-2 text-third">
+              <h3 class="text-base sm:text-lg">Temperatura</h3>
+              <span id="temp-value" class="text-4xl sm:text-5xl">-</span>
+            </div>
+
+            <div class="max-w-60 lg:w-full grid grid-cols-1 gap-2 text-third">
+              <h3 class="text-base sm:text-lg">Movimento</h3>
+              <span id="movement-value" class="text-4xl sm:text-5xl">-</span>
+            </div>
+
+            <div class="max-w-60 lg:w-full grid grid-cols-1 gap-2 text-third">
+              <h3 class="text-base sm:text-lg">Nível de Ruído</h3>
+              <span id="noise-value" class="text-4xl sm:text-5xl">-</span>
+            </div>
+
+          </div>
+        </section>
+
+        <!-- Fan Control Section -->
+        <section class="grid grid-cols-1 gap-5">
+          <h2 class="text-2xl text-primary font-bold">VENTILADOR</h2>
+          <div
+            class="px-5 py-10 flex flex-col md:flex-row gap-10 justify-between items-center text-secondary font-medium bg-soft rounded-xl shadow-md">
+            <div class="w-full flex items-center gap-2">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                class="lucide lucide-fan-icon lucide-fan">
+                <path
+                  d="M10.827 16.379a6.082 6.082 0 0 1-8.618-7.002l5.412 1.45a6.082 6.082 0 0 1 7.002-8.618l-1.45 5.412a6.082 6.082 0 0 1 8.618 7.002l-5.412-1.45a6.082 6.082 0 0 1-7.002 8.618l1.45-5.412Z" />
+                <path d="M12 12v.01" />
+              </svg>
+              <span class="text-xl">Modo Automático</span>
+              <label class="relative inline-flex items-center cursor-pointer">
+                <input type="checkbox" id="autoModeSwitch" class="sr-only peer">
+                <div
+                  class="w-11 h-6 bg-third peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600">
+                </div>
+              </label>
+            </div>
+            <div class="w-full grid grid-cols-1 gap-2">
+              <h3 class="text-xl">Speed</h3>
+              <div class="flex gap-1 text-soft">
+                <button id="speedBtn1"
+                  class="speed-btn w-full py-2 rounded-lg transition-colors bg-third disabled:cursor-not-allowed disabled:opacity-50">I</button>
+                <button id="speedBtn2"
+                  class="speed-btn w-full py-2 rounded-lg transition-colors bg-third disabled:cursor-not-allowed disabled:opacity-50">II</button>
+                <button id="speedBtn3"
+                  class="speed-btn w-full py-2 rounded-lg transition-colors bg-third disabled:cursor-not-allowed disabled:opacity-50">III</button>
+                <!-- <button class={`w-full py-2 rounded-lg ${fanSpeed===255 ? 'bg-primary' : 'bg-third' } ${autoMode
+                  ? 'hover:cursor-not-allowed opacity-60' : 'hover:cursor-pointer' }`} onClick={()=> setFanSpeed(255)}
+                  disabled={autoMode}>III</button> -->
+              </div>
+            </div>
+          </div>
+        </section>
+
+      </main>
+
       <script src="/scripts/notifications.js"></script>
       <script src="/scripts/fanControl.js"></script>
       <script src="/scripts/dataFetch.js"></script>
