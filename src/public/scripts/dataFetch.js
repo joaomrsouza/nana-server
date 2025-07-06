@@ -1,15 +1,22 @@
 const tempStatus = document.getElementById('temp-sensor-status');
 const tempStatusText = document.getElementById('temp-sensor-status-text');
+const tempValue = document.getElementById('temp-value');
 
 const movementStatus = document.getElementById('movement-sensor-status');
 const movementStatusText = document.getElementById('movement-sensor-status-text');
+const movementValue = document.getElementById('movement-value');
 
 const noiseStatus = document.getElementById('noise-sensor-status');
 const noiseStatusText = document.getElementById('noise-sensor-status-text');
-
-const tempValue = document.getElementById('temp-value');
-const movementValue = document.getElementById('movement-value');
 const noiseValue = document.getElementById('noise-value');
+
+const fanStatus = document.getElementById('autoModeSwitch');
+
+const reverseSpeedMap = {
+  0: 1,
+  120: 2,
+  255: 3,
+}
 
 async function fetchData(route) {
   const response = await fetch(`/api/${route}`);
@@ -72,7 +79,7 @@ async function updateMovementValueLabel(movement) {
 }
 
 async function updateNoiseValueLabel(noiseLevel) {
-  tempValue.classList.remove("text-failed", "text-safe", "text-caution");
+  noiseValue.classList.remove("text-failed", "text-safe", "text-caution");
 
   if (noiseLevel <= 800) {
     noiseValue.textContent = "-";
@@ -100,9 +107,30 @@ async function updateSensorValues() {
   }
 }
 
+// === FAN STATUS UPDATE ===
+let ignoreFirst = true;
+async function updateFanStatus() {
+  if (!ignoreFirst && !fanStatus.checked) return;
+
+  try {
+    const { data } = await fetchData('fan');
+    updateSpeedButtonState(reverseSpeedMap[data.fanSpeed]);
+    if (ignoreFirst) {
+      fanStatus.checked = data.autoMode;
+    }
+    speedButtons.forEach(btn => {
+      btn.disabled = data.autoMode;
+    });
+    ignoreFirst = false;
+  } catch (error) {
+    console.error('Erro ao buscar status do ventilador:', error);
+  }
+}
+
 function updateUI() {
   updateSensorStatus();
   updateSensorValues();
+  updateFanStatus();
 }
 
 setInterval(updateUI, 1000);

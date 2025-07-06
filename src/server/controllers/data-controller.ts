@@ -60,6 +60,13 @@ router.post("/", async (req: Request, res: Response) => {
       }));
     }
 
+    if (data.fanAutoMode !== undefined) {
+      ops.push(Control.upsert({
+        name: "fanAutoMode",
+        value: data.fanAutoMode.toString(),
+      }));
+    }
+
 
     await Promise.all([
       ...ops,
