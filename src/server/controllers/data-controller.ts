@@ -30,6 +30,9 @@ router.post("/", async (req: Request, res: Response) => {
   try {
     const data = DeviceDataSchema.parse(req.body);
 
+    console.log("POST /api/data");
+    console.dir({ data }, { depth: Infinity, colors: true });
+
     const ops = [];
 
     if (data.temperature !== null) {
@@ -59,7 +62,6 @@ router.post("/", async (req: Request, res: Response) => {
         value: data.fanSpeed.toString(),
       }));
     }
-
 
     await Promise.all([
       ...ops,
