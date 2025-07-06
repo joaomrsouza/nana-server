@@ -116,10 +116,10 @@ async function updateFanStatus() {
     const { data } = await fetchData('fan');
     updateSpeedButtonState(reverseSpeedMap[data.fanSpeed]);
     if (ignoreFirst) {
-      fanStatus.checked = data.autoMode;
+      fanStatus.checked = data.fanAutoMode;
     }
     speedButtons.forEach(btn => {
-      btn.disabled = data.autoMode;
+      btn.disabled = data.fanAutoMode;
     });
     ignoreFirst = false;
   } catch (error) {

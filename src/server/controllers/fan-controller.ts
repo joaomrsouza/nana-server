@@ -13,7 +13,7 @@ const router = Router();
 router.get("/", async (_req: Request, res: Response) => {
   try {
     const controls = await Control.findAll({
-      where: { name: ["fanSpeed", "fanMode"] },
+      where: { name: ["fanSpeed", "fanAutoMode"] },
     });
 
     let fanSpeed = 0;
@@ -23,7 +23,7 @@ router.get("/", async (_req: Request, res: Response) => {
       const { name, value } = entry.get();
 
       if (name === "fanSpeed") fanSpeed = Number(value);
-      if (name === "fanMode") autoMode = value === "true";
+      if (name === "fanAutoMode") autoMode = value === "true";
     });
 
     console.log("GET FAN", { fanSpeed, autoMode });
@@ -41,7 +41,7 @@ router.post("/", async (req: Request, res: Response) => {
 
     await Promise.all([
       Control.upsert({ name: "fanSpeed", value: data.fanSpeed.toString() }),
-      Control.upsert({ name: "fanMode", value: data.autoMode.toString() }),
+      Control.upsert({ name: "fanAutoMode", value: data.fanAutoMode.toString() }),
     ]);
 
     sendCreatedResponse(res);
