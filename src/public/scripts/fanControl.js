@@ -3,7 +3,7 @@ const speedButtons = document.querySelectorAll('.speed-btn');
 
 let currentSpeed = 1;
 
-async function updateFan(speed, autoMode) {
+async function updateFan(speed, fanAutoMode) {
   try {
     const speedMap = {
       1: 0,
@@ -14,9 +14,9 @@ async function updateFan(speed, autoMode) {
     await fetch('/api/fan', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ fanSpeed: speedMap[speed], autoMode })
+      body: JSON.stringify({ fanSpeed: speedMap[speed], fanAutoMode })
     });
-    console.log(`Ventilador atualizado: Velocidade ${speed}, Modo Automático ${autoMode ? 'Ativo' : 'Desligado'}`);
+    console.log(`Ventilador atualizado: Velocidade ${speed}, Modo Automático ${fanAutoMode ? 'Ativo' : 'Desligado'}`);
   } catch (error) {
     console.error('Erro ao atualizar o ventilador:', error);
   }
