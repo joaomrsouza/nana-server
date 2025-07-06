@@ -1,7 +1,17 @@
+@import url("https://fonts.googleapis.com/css2?family=Sora:wght@100..800&display=swap");
 @import "tailwindcss";
 
 @theme {
-  --color-primary: #3b82f6;
-  --color-secondary: #6b7280;
-  --font-sans: system-ui, -apple-system, sans-serif;
+  --font-sora: "Sora";
+  --color-bg: #E9ECEF;
+  --color-primary: #054A91;
+  --color-secondary: #3E7CB1;
+  --color-third: #81A4CD;
+  --color-soft: #DBE4EE;
+  --color-sucessful-bg: #95D5B2;
+  --color-sucessful: #005400;
+  --color-failed-bg: #FFB4C2;
+  --color-failed: #780000;
+  --color-safe: #008000;
+  --color-caution: #E09F3E;
 }
