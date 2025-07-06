@@ -92,9 +92,9 @@ async function updateNoiseValueLabel(noiseLevel) {
 async function updateSensorValues() {
   try {
     const { data } = await fetchData('data');
-    updateTempValueLabel(data.temperatureReadings.temperature);
-    updateMovementValueLabel(data.movementReadings.movement);
-    updateNoiseValueLabel(data.noiseReadings.noiseLevel);
+    data.temperatureReadings && updateTempValueLabel(data.temperatureReadings.temperature);
+    data.movementReadings && updateMovementValueLabel(data.movementReadings.movement);
+    data.noiseReadings && updateNoiseValueLabel(data.noiseReadings.noiseLevel);
   } catch (error) {
     console.error('Erro ao buscar valores dos sensores:', error);
   }
