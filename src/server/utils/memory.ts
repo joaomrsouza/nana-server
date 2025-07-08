@@ -1,0 +1,1 @@
+export const memoryMap = new Map<string, string>();

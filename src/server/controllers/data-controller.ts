@@ -1,4 +1,6 @@
 import { MovementReadings, NoiseReadings, TemperatureReadings } from "@/db/models";
+import { verifyAndCreateDataEvents } from "@/utils/data-events";
+import { memoryMap } from "@/utils/memory";
 import { sendCreatedResponse, sendErrorResponse, sendSuccessResponse } from "@/utils/send-response";
 import { Request, Response, Router } from "express";
 import { Control } from "../db/models/control-model";
@@ -80,7 +82,11 @@ router.post("/", async (req: Request, res: Response) => {
         name: "noiseStatus",
         value: data.noiseSensorStatus.toString(),
       }),
+
+      verifyAndCreateDataEvents(data)
     ]);
+
+    memoryMap.set("last-data", JSON.stringify(data));
 
     sendCreatedResponse(res);
   } catch (error) {

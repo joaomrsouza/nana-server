@@ -3,7 +3,13 @@ import "./utils/module-alias";
 
 import express, { NextFunction, Request, Response } from "express";
 import path from "path";
-import { dataController, fanController, rootController, sensorsController } from "./controllers";
+import {
+  dataController,
+  eventController,
+  fanController,
+  rootController,
+  sensorsController,
+} from "./controllers";
 import { db } from "./db";
 import { env } from "./env";
 
@@ -20,6 +26,7 @@ app.use("/", rootController);
 app.use("/api/data", dataController);
 app.use("/api/fan", fanController);
 app.use("/api/sensors", sensorsController);
+app.use("/api/event", eventController);
 
 app.use((err: unknown, _req: Request, res: Response, _next: NextFunction) => {
   console.error("Erro capturado pelo middleware:", err);
