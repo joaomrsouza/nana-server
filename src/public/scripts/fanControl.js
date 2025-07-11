@@ -1,5 +1,5 @@
-const autoModeSwitch = document.getElementById('autoModeSwitch');
-const speedButtons = document.querySelectorAll('.speed-btn');
+const autoModeSwitch = document.getElementById("autoModeSwitch");
+const speedButtons = document.querySelectorAll(".speed-btn");
 
 let currentSpeed = 1;
 
@@ -11,18 +11,17 @@ async function updateFan(speed, fanAutoMode) {
       3: 255,
     };
 
-    await fetch('/api/fan', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ fanSpeed: speedMap[speed], fanAutoMode })
+    await fetch("/api/fan", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ fanSpeed: speedMap[speed], fanAutoMode }),
     });
-    console.log(`Ventilador atualizado: Velocidade ${speed}, Modo Automático ${fanAutoMode ? 'Ativo' : 'Desligado'}`);
   } catch (error) {
-    console.error('Erro ao atualizar o ventilador:', error);
+    console.error("Erro ao atualizar o ventilador:", error);
   }
 }
 
-autoModeSwitch.addEventListener('change', function () {
+autoModeSwitch.addEventListener("change", function () {
   const isAutoMode = this.checked;
 
   speedButtons.forEach(btn => {
@@ -33,7 +32,7 @@ autoModeSwitch.addEventListener('change', function () {
 });
 
 speedButtons.forEach((btn, index) => {
-  btn.addEventListener('click', function () {
+  btn.addEventListener("click", function () {
     if (!autoModeSwitch.checked) {
       currentSpeed = index + 1;
       updateSpeedButtonState(currentSpeed);
@@ -45,11 +44,11 @@ speedButtons.forEach((btn, index) => {
 function updateSpeedButtonState(activeSpeed) {
   speedButtons.forEach((btn, index) => {
     if (index + 1 === activeSpeed) {
-      btn.classList.remove('bg-third');
-      btn.classList.add('bg-primary');
+      btn.classList.remove("bg-third");
+      btn.classList.add("bg-primary");
     } else {
-      btn.classList.remove('bg-primary');
-      btn.classList.add('bg-third');
+      btn.classList.remove("bg-primary");
+      btn.classList.add("bg-third");
     }
   });
 }

@@ -26,8 +26,6 @@ router.get("/", async (_req: Request, res: Response) => {
       if (name === "fanAutoMode") fanAutoMode = value === "true";
     });
 
-    console.log("GET FAN", { fanSpeed, fanAutoMode });
-
     sendSuccessResponse(res, { fanSpeed, fanAutoMode });
   } catch (error) {
     sendErrorResponse(res, error);
@@ -41,7 +39,10 @@ router.post("/", async (req: Request, res: Response) => {
 
     await Promise.all([
       Control.upsert({ name: "fanSpeed", value: data.fanSpeed.toString() }),
-      Control.upsert({ name: "fanAutoMode", value: data.fanAutoMode.toString() }),
+      Control.upsert({
+        name: "fanAutoMode",
+        value: data.fanAutoMode.toString(),
+      }),
     ]);
 
     sendCreatedResponse(res);

@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+  <%- include("templates/header") %>
+
+  <body
+    class="p-5 sm:p-10 min-h-screen flex flex-col items-center gap-5 bg-bg font-sora"
+  >
+    <%- include("templates/navbar") %>
+
+    <main class="pt-5 sm:pt-10 max-w-screen-xl w-full flex flex-col gap-10">
+      <section class="grid grid-cols-1 gap-10">
+        <h2 class="text-2xl text-primary font-bold">NOTIFICAÇÕES</h2>
+        <div
+          id="events-container"
+          class="flex flex-col gap-10 font-medium"
+        ></div>
+      </section>
+    </main>
+
+    <script src="/scripts/events.js"></script>
+  </body>
+  <%- include("templates/footer") %>
+</html>
